@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import WalletButton from "@/components/wallet/WalletButton";
 
 interface NavbarProps {
   showAuth?: boolean;
@@ -15,7 +14,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ 
-  showAuth = true, 
+  showAuth = false, 
   transparent = false,
   className = "" 
 }: NavbarProps) {
@@ -111,7 +110,6 @@ export default function Navbar({
 
           {/* Right Section */}
           <div className="flex items-center gap-3">
-            <WalletButton />
             {showAuth && (
               <div className="hidden md:flex items-center gap-2">
                 <Link href="/onboarding/sign-in">
