@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation"
 import { ChainSelector } from "@/components/crosschain/ChainSelector"
 import { useWdkNetwork } from "@/hooks/scaffold-eth/useWdkNetwork"
 import { useCrossChain } from "@/hooks/useCrossChain"
+import { motion } from "framer-motion"
 
 export default function PostProjectPage() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -167,31 +168,92 @@ export default function PostProjectPage() {
           </div>
         )
       case 4:
+        const summaryDetails = [
+          { label: "Title", value: "Build a mobile app" },
+          { label: "Category", value: "Mobile Development" },
+          { label: "Duration", value: "1-3 months" },
+          { label: "Experience", value: "Intermediate" }
+        ]
+
+        const checklistItems = [
+          "Double-check that milestones match the expected deliverables.",
+          "Escrow releases once each milestone is approved by your team.",
+          "Payments settle in USDT on Avalanche with transparent fees."
+        ]
+
         return (
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold mb-4">Review & Submit</h2>
-            <Card className="p-6 bg-gray-50">
-              <h3 className="font-semibold mb-4">Project Summary</h3>
-              <div className="space-y-2 text-sm">
-                <p><span className="font-medium">Title:</span> Build a mobile app</p>
-                <p><span className="font-medium">Category:</span> Mobile Development</p>
-                <p><span className="font-medium">Budget:</span> $5,000 (Fixed Price)</p>
-                <p><span className="font-medium">Duration:</span> 1-3 months</p>
-                <p><span className="font-medium">Experience:</span> Intermediate</p>
-                {isCrossChain && destinationChainId && (
-                  <div className="mt-3 pt-3 border-t">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Network className="h-4 w-4 text-[#15949C]" />
-                      <span className="font-medium text-[#15949C]">Cross-Chain Project</span>
-                    </div>
-                    <p className="text-xs text-gray-600">
-                      This project will be available on multiple Avalanche blockchains
-                    </p>
+          <div className="space-y-5">
+            <div>
+              <h2 className="text-2xl font-semibold text-[#002333]">Review & Submit</h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Confirm the summary below before publishing your project.
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-[1fr_260px]">
+              <Card className="p-6 bg-[#f6fbfc] border border-[#d4ecef]">
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-[#0f5b66]">Budget</p>
+                    <p className="text-2xl font-semibold text-[#002333]">5,000 USDT</p>
+                    <p className="text-xs text-[#3c6f79]">Fixed price · Split across 3 milestones</p>
                   </div>
-                )}
-              </div>
-            </Card>
-            <p className="text-sm text-gray-600">
+                  <span className="inline-flex items-center rounded-full bg-[#16c0c9]/20 px-3 py-1 text-xs font-semibold text-[#0f5b66]">
+                    Escrow protected
+                  </span>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {summaryDetails.map((item) => (
+                    <div key={item.label} className="rounded-lg border border-white/0 bg-white/70 p-4 shadow-sm">
+                      <p className="text-xs uppercase tracking-wide text-[#3c6f79]">{item.label}</p>
+                      <p className="mt-1 font-semibold text-[#002333] text-sm">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 space-y-3 text-sm text-[#0f5b66]">
+                  <div className="rounded-lg border border-[#d4ecef] bg-white/80 p-4">
+                    <p className="font-semibold text-[#002333]">Milestones</p>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      <div className="rounded-md bg-[#eef8f9] p-3 text-sm">
+                        <p className="font-medium text-[#002333]">Discovery & wireframes</p>
+                        <p className="text-xs text-[#3c6f79] mt-1">ETA · 5 days · Approved</p>
+                      </div>
+                      <div className="rounded-md bg-[#fff3dd] p-3 text-sm">
+                        <p className="font-medium text-[#5c420f]">Smart contract handoff</p>
+                        <p className="text-xs text-[#936d28] mt-1">ETA · 7 days · Pending review</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {isCrossChain && destinationChainId && (
+                    <div className="rounded-lg border border-[#16c0c9]/30 bg-[#16c0c9]/10 p-3">
+                      <p className="font-semibold text-[#0f5b66] flex items-center gap-2">
+                        <Network className="h-4 w-4" /> Cross-chain project enabled
+                      </p>
+                      <p className="text-xs text-[#0f5b66] mt-1">
+                        Destination chain ID: {destinationChainId}. Talent from multiple Avalanche networks can participate.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-white border border-gray-200 shadow-sm">
+                <h3 className="text-base font-semibold text-[#002333] mb-4">Before you post</h3>
+                <ul className="space-y-3 text-sm text-gray-600">
+                  {checklistItems.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="mt-1 h-2 w-2 rounded-full bg-[#15949C]" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </div>
+
+            <p className="text-xs text-gray-500">
               By posting this project, you agree that this is a demo and no real project will be created.
             </p>
           </div>
@@ -206,16 +268,26 @@ export default function PostProjectPage() {
       <Header />
       
       <main className="flex-1">
-        <div className="bg-gradient-to-r from-[#002333] to-[#15949C] text-white py-10">
+        <motion.section
+          className="bg-gradient-to-r from-[#002333] to-[#15949C] text-white py-10"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <div className="container mx-auto px-4 max-w-7xl">
             <h1 className="text-3xl font-bold mb-2">Post a Project</h1>
             <p className="opacity-90">Find the perfect freelancer for your project</p>
           </div>
-        </div>
+        </motion.section>
 
         <div className="container mx-auto px-4 py-8 max-w-3xl">
           {/* Progress Steps */}
-          <div className="flex items-center justify-between mb-8">
+          <motion.div
+            className="flex items-center justify-between mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          >
             {[1, 2, 3, 4].map((step) => (
               <div key={step} className="flex items-center flex-1">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
@@ -232,15 +304,37 @@ export default function PostProjectPage() {
                 )}
               </div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Step Content */}
-          <Card className="p-6 mb-6">
-            {renderStepContent()}
-          </Card>
+          {currentStep === 4 ? (
+            <motion.div
+              className="mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              {renderStepContent()}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <Card className="p-6 mb-6">
+                {renderStepContent()}
+              </Card>
+            </motion.div>
+          )}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between">
+          <motion.div
+            className="flex justify-between"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          >
             <Button
               variant="outline"
               onClick={handleBack}
@@ -265,7 +359,7 @@ export default function PostProjectPage() {
                 {isLoading ? "Posting..." : "Post Project"}
               </Button>
             )}
-          </div>
+          </motion.div>
         </div>
       </main>
 
